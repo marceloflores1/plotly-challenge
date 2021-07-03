@@ -11,8 +11,8 @@ d3.json("samples.json").then((importedData) => {
     //   return parseFloat(b.greekSearchResults) - parseFloat(a.greekSearchResults);
     // });
     
-    var names = data.names.map((row) => parseInt(row));
-    dropdownNames(names);
+    var dropItems = importedData.names.map((row) => parseInt(row));
+    dropdownNames(dropItems);
 
     // Slice the first 10 objects for plotting
     var slicedSampleValues = sampleData.sample_values.slice(0, 10);
@@ -45,8 +45,8 @@ d3.json("samples.json").then((importedData) => {
   });
 
   // Function to add dropdown items
-  function dropdownNames (data) {
-    data.forEach((name) => {
-        d3.dropdownSel.append('option').text(name);
+  function dropdownNames (dropItems) {
+    dropItems.forEach((name) => {
+        dropdownSel.append('option').text(name);
     })
   };
