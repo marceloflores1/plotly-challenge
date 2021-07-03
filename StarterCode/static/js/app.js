@@ -1,4 +1,5 @@
 var dropdownSel = d3.select("#selDataset");
+var demographicSel = d3.select("#sample-metadata")
 
 d3.json("samples.json").then((importedData) => {
     // console.log(importedData);
@@ -14,11 +15,17 @@ d3.json("samples.json").then((importedData) => {
     var dropItems = importedData.names.map((row) => parseInt(row));
     dropdownNames(dropItems);
 
+    var metadataSel = dropdownSel.property("value");
+    var allMetadata = importedData.metadata
+    console.log(metadataSel);
+    console.log(allMetadata);
+    demographicInfo(allMetadata, metadataSel);
+
     // Slice the first 10 objects for plotting
     var slicedSampleValues = sampleData.sample_values.slice(0, 10);
     var slicedOtuIds = sampleData.otu_ids.slice(0,10);
     var slicedOutLabels = sampleData.otu_labels.slice(0,10);
-  
+    
     // Reverse the array due to Plotly's defaults
   
     // Trace1 for the Greek Data
@@ -48,5 +55,17 @@ d3.json("samples.json").then((importedData) => {
   function dropdownNames (dropItems) {
     dropItems.forEach((name) => {
         dropdownSel.append('option').text(name);
+    })
+  };
+
+  function demographicInfo (allMetadata, metadataSel) {
+    demographicSel.html("");
+    allMetadata.forEach(row => {
+        if(row.id === parseInt(metadataSel)) {
+            for(var [key,value] of Object.entries(row)) {
+                var upperKey = key.toUpperCase();
+                demographicSel.append('p').text(`${upperKey}: ${value}`);
+            }
+        }
     })
   };
