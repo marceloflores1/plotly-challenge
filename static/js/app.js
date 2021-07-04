@@ -89,16 +89,30 @@ function optionChanged(inputID) {
            value: washFreq,
            title: "Scrubs per Week",
            gauge: {
-                axis: {range: [0,9]}, 
-                bar: {color: 'green'},
+                axis: {
+                    range: [0,9], 
+                    dtick: 1
+                }, 
+                bar: {color: 'darkblue'},
                 threshold: {
                     line: {
                         color:'red',
-                        width: 4
+                        width: 6
                     },
                     thickness: 0.8,
                     value: washFreq
-                }
+                },
+                steps: [
+                    {range:[0,1], color:'rgb(150,255,200)'},
+                    {range:[1,2], color:'rgb(125,255,180)'},
+                    {range:[2,3], color:'rgb(100,255,160)'},
+                    {range:[3,4], color:'rgb(75,255,140)'},
+                    {range:[4,5], color:'rgb(50,255,120)'},
+                    {range:[5,6], color:'rgb(25,255,100)'},
+                    {range:[6,7], color:'rgb(0,255,80)'},
+                    {range:[7,8], color:'rgb(0,255,60)'},
+                    {range:[8,9], color:'rgb(0,255,40)'}
+                ]
             }
         };
 
