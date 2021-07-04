@@ -52,4 +52,4 @@ The following task is advanced and therefore optional.
 
 ### <https://marceloflores1.github.io/plotly-challenge/>
 
-![BBB_Dashboard](Images/BBB_Dashboard1.png)
+![BBB_Dashboard](Images/BBB_Dashboard.png)
