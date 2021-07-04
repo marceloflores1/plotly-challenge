@@ -19,9 +19,9 @@ function optionChanged(inputID) {
         var sampleData = importedData.samples.find((sample) => sample.id === inputID);
         var slicedSampleValues = sampleData.sample_values.slice(0, 10).reverse();
         var slicedOtuIds = sampleData.otu_ids.slice(0,10).map((row) => `OTU ${String(row)}`).reverse();
-        var slicedOutLabels = sampleData.otu_labels.slice(0,10);
+        var slicedOutLabels = renameSplit(sampleData.otu_labels.slice(0,10));
 
-        // Trace1 
+        // Bar Chart 
         var trace1 = {
         x: slicedSampleValues,
         y: slicedOtuIds,
@@ -30,13 +30,45 @@ function optionChanged(inputID) {
         type: "bar",
         orientation: "h"
         };
-        var chartData = [trace1];
+        var barData = [trace1];
 
-        var layout = {
+        var barLayout = {
         title: "Top 10 Bacteria Cultures Found",
         };
 
-        Plotly.newPlot("bar", chartData, layout);
+        Plotly.newPlot("bar", barData, barLayout);
+
+        // Bubble Chart
+        var trace2 = {
+            x: sampleData.otu_ids,
+            y: sampleData.sample_values,
+            text: renameSplit(sampleData.otu_labels),
+            mode: 'markers',
+            marker: {
+                size: sampleData.sample_values,
+                color: sampleData.otu_ids,
+                colorscale: [
+                    [0, 'rgb(0,180,255)'],
+                    [0.5, 'rgb(0,255,50)'],
+                    [1, 'rgb(255,50,0)']
+                ]
+            }
+        };
+
+        var bubbleData = [trace2];
+
+        var bubbleLayout = {
+            title: "Bacteria Cultures Per Sample",
+            xaxis: {title: "Operational Taxonomic Unit (OTU) ID"},
+            yaxis: {title: "Sample Values"},
+        };
+
+        Plotly.newPlot("bubble", bubbleData, bubbleLayout);
+
+        // // Gauge Chart
+        // var trace3 = {
+        //    
+        // }
     })
 };
 
@@ -59,10 +91,8 @@ function optionChanged(inputID) {
     })
   };
 
-// THIS WILL BE MY FUNCTION TO CHANGE THE NAME OF THE WEIRD ; LIST OF VALUES
-//   function renameSplit(list) {
-//     newlist []  
-//     list.forEach(item => {
-//         newlist.append()
-//     })
-//   };
+  function renameSplit(list) {
+    var newlist = [];
+    list.forEach(item => newlist.push(item.replaceAll(";", ", ")))
+    return newlist;
+  };
