@@ -17,7 +17,7 @@ function optionChanged(inputID) {
     d3.json("samples.json").then((importedData) => {
                 
         // Demographic Info
-        var allMetadata = importedData.metadata
+        var allMetadata = importedData.metadata;
         demographicSel.html("");
         allMetadata.forEach(row => {
             if(row.id === parseInt(inputID)) {
@@ -36,6 +36,8 @@ function optionChanged(inputID) {
         var slicedSampleValues = sampleValues.slice(0, 10).reverse();
         var slicedOtuIds = otuIds.slice(0,10).map((row) => `OTU ${String(row)}`).reverse();
         var slicedOtuLabels = otuLabels.slice(0,10);
+        var sampleMetadata = importedData.metadata.find((metadata) => metadata.id === parseInt(inputID));
+        var washFreq = sampleMetadata.wfreq;
 
         // Bar Chart 
         var trace1 = {
@@ -81,9 +83,33 @@ function optionChanged(inputID) {
         Plotly.newPlot("bubble", bubbleData, bubbleLayout);
 
         // Gauge Chart
-        // var trace3 = {
-        //    
-        // }
+        var trace3 = {
+           type: 'indicator',
+           mode: 'gauge+number',
+           value: washFreq,
+           title: "Scrubs per Week",
+           gauge: {
+                axis: {range: [0,9]}, 
+                bar: {color: 'green'},
+                threshold: {
+                    line: {
+                        color:'red',
+                        width: 4
+                    },
+                    thickness: 0.8,
+                    value: washFreq
+                }
+            }
+        };
+
+        var gaugeData = [trace3];
+
+        var gaugeLayout = {
+            title: "Belly Button Washing Frequency"
+        };
+
+        Plotly.newPlot("gauge", gaugeData, gaugeLayout);
+
     })
 };
 
